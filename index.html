@@ -1,125 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>For Kameron 💖</title>
 <style>
 body {
   margin: 0;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Arial', sans-serif;
+  background: #0d0d0d;
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  overflow: hidden;
-  color: white;
+  height: 100vh;
 }
 
 .card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-  padding: 40px 50px;
-  border-radius: 25px;
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(255,105,180,0.2);
-  animation: fadeIn 2s ease;
-  max-width: 90%;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(255,0,150,0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-h1 { color: #ff6fae; }
-
 button {
-  padding: 12px 30px;
+  margin: 10px;
+  padding: 12px 20px;
+  border-radius: 25px;
   border: none;
-  border-radius: 30px;
-  font-size: 16px;
   cursor: pointer;
-  margin: 12px;
-  transition: 0.3s;
+  font-size: 16px;
 }
 
 #yesBtn {
-  background: linear-gradient(45deg, #ff6fae, #ff9ad5);
+  background: hotpink;
   color: white;
 }
-#yesBtn:hover { transform: scale(1.1); }
 
 #noBtn {
-  background: #555;
+  background: #444;
   color: white;
+  position: relative;
 }
 
 textarea {
   width: 90%;
   height: 120px;
   border-radius: 15px;
+  padding: 10px;
   border: none;
-  padding: 12px;
+  margin-top: 10px;
   font-size: 16px;
 }
 
-.confetti, .heart {
-  position: absolute;
-  animation: fall 3s linear forwards;
+.hearts {
+  position: relative;
+  height: 100px;
+  overflow: hidden;
 }
 
 .heart {
+  position: absolute;
+  bottom: 0;
+  animation: floatUp 2s ease-in forwards;
   font-size: 24px;
 }
 
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120px); opacity: 0; }
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  animation: fall 2s linear forwards;
+}
+
 @keyframes fall {
-  0% {transform: translateY(0) rotate(0deg); opacity:1;}
-  100% {transform: translateY(100vh) rotate(360deg); opacity:0;}
-}
-
-@keyframes fadeIn {
-  from {opacity:0;}
-  to {opacity:1;}
-}
-
-.typing {
-  border-right: 2px solid #ff6fae;
-  white-space: nowrap;
-  overflow: hidden;
+  from { transform: translateY(0); }
+  to { transform: translateY(100vh); }
 }
 </style>
 </head>
-
 <body>
 
-<audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-</audio>
-
 <div class="card" id="card">
-  <h1>Hey Kameron 💖</h1>
-  <p>I made this just for you…</p>
-  <p>So tell me honestly 😌</p>
-
-  <h2>Are you happy that we met?</h2>
-
+  <h1 id="typing"></h1>
+  <p>Are you happy that we met?</p>
   <button id="yesBtn">Yes 💕</button>
-  <button id="noBtn">Hmm 🤔</button>
+  <button id="noBtn">No 😏</button>
 </div>
 
 <script>
+const card = document.getElementById("card");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const card = document.getElementById("card");
-const music = document.getElementById("music");
+const typingText = "Hey Kameron 💖";
 
-document.body.addEventListener("click", () => {
-  music.play();
-},{once:true});
+let index = 0;
+function typeEffect(){
+  if(index < typingText.length){
+    document.getElementById("typing").innerHTML += typingText.charAt(index);
+    index++;
+    setTimeout(typeEffect, 100);
+  }
+}
+typeEffect();
 
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", moveButton);
 
-function moveButton() {
+function moveButton(){
   const cardRect = card.getBoundingClientRect();
-  const x = cardRect.left + Math.random() * (cardRect.width - 120);
-  const y = cardRect.top + Math.random() * (cardRect.height - 60);
+  const x = Math.random() * (cardRect.width - 100);
+  const y = Math.random() * (cardRect.height - 50);
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
@@ -128,24 +130,21 @@ function moveButton() {
 yesBtn.addEventListener("click", () => {
   card.innerHTML = `
     <h1>That makes me smile, Kameron 💖</h1>
-    <p class="typing" id="typingText"></p>
+    <p>Meeting you was a beautiful coincidence ✨</p>
     <button id="reasonBtn">Tell me why you feel that way 💌</button>
   `;
-  typeText("Meeting you was a beautiful coincidence ✨", "typingText");
   startConfetti();
 
-  document.getElementById("reasonBtn").addEventListener("click", showReasonBox);
+  document.getElementById("reasonBtn").addEventListener("click", showReasonInput);
 });
 
-function showReasonBox(){
+function showReasonInput(){
   card.innerHTML = `
-    <h2>Your words mean a lot to me 💖</h2>
-    <p>Please write your reason here:</p>
-    <textarea id="reasonInput" placeholder="Type your reason here..."></textarea><br>
-    <button id="sendBtn">Send 💌</button>
+    <h2>Your reason means a lot to me 💖</h2>
+    <textarea id="reasonInput" placeholder="Type your reason here..."></textarea>
+    <br>
+    <button onclick="sendReason()">Send 💌</button>
   `;
-
-  document.getElementById("sendBtn").addEventListener("click", sendReason);
 }
 
 function sendReason(){
@@ -155,70 +154,65 @@ function sendReason(){
     return;
   }
 
+  const message = `Kameron said YES 💖\nReason: ${reason}`;
+
   card.innerHTML = `
     <h2>Sending your words to her… 💖</h2>
-    <p>Please wait a moment ✨</p>
+    <p>Your message is ready ✨</p>
+    <div class="hearts"></div>
+    <button id="openWA">Open WhatsApp 💌</button>
   `;
 
   heartAnimation();
 
-  const message = `Kameron said YES 💖\nReason: ${reason}`;
-  setTimeout(() => {
-    window.location.href = "https://wa.me/6282295358933?text=" + encodeURIComponent(message);
-  }, 2000);
-
-  setTimeout(showFinalPage, 4000);
+  document.getElementById("openWA").addEventListener("click", () => {
+    window.open(
+      "https://wa.me/6282295368933?text=" + encodeURIComponent(message),
+      "_blank"
+    );
+    showFinalPage();
+  });
 }
 
 function showFinalPage(){
   card.innerHTML = `
     <h1>She has received your answer 💖</h1>
-    <p>Now it’s your turn to tell her how you feel after opening this link 😌</p>
+    <p>Now go and text her how you feel after opening this link 😌</p>
     <button onclick="exitToChat()">Exit & text her 💌</button>
   `;
 }
 
 function exitToChat(){
   const msg = "I just opened your link and it made me feel...";
-  window.location.href = "https://wa.me/6282295358933?text=" + encodeURIComponent(msg);
-}
-
-function startConfetti(){
-  for(let i=0;i<120;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*window.innerWidth+"px";
-    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
-    c.style.width="10px";
-    c.style.height="10px";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
+  window.open(
+    "https://wa.me/6282295368933?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
 }
 
 function heartAnimation(){
-  for(let i=0;i<30;i++){
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="❤️";
-    h.style.left=Math.random()*window.innerWidth+"px";
-    h.style.top="0px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),3000);
+  const heartsContainer = document.querySelector(".hearts");
+  for(let i=0;i<15;i++){
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "%";
+    heartsContainer.appendChild(heart);
+    setTimeout(()=>heart.remove(),2000);
   }
 }
 
-function typeText(text,id){
-  let i=0;
-  const el=document.getElementById(id);
-  const interval=setInterval(()=>{
-    el.innerHTML += text.charAt(i);
-    i++;
-    if(i>=text.length) clearInterval(interval);
-  },80);
+function startConfetti(){
+  for(let i=0;i<30;i++){
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random()*100 + "vw";
+    confetti.style.background = ["pink","hotpink","white"][Math.floor(Math.random()*3)];
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),2000);
+  }
 }
 </script>
 
 </body>
 </html>
-
