@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>For Kameron 💖</title>
 
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -18,15 +23,16 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding: 15px;
 }
 
 .card {
   background: rgba(255,255,255,0.05);
-  padding: 30px 25px;
+  padding: 25px 20px;
   border-radius: 20px;
   text-align: center;
-  width: 90%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 360px;
   box-shadow: 0 0 25px rgba(255,105,180,0.3);
   position: relative;
   overflow: hidden;
@@ -34,17 +40,23 @@ body {
 
 h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 26px;
+  font-size: 24px;
 }
 
 p {
-  font-size: 16px;
-  opacity: 0.9;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.buttons {
+  margin-top: 20px;
 }
 
 button {
-  margin: 12px;
-  padding: 12px 25px;
+  width: 80%;
+  max-width: 260px;
+  margin: 10px auto;
+  padding: 14px;
   border-radius: 30px;
   border: none;
   font-size: 16px;
@@ -57,10 +69,6 @@ button {
   color: white;
 }
 
-#yesBtn:hover {
-  transform: scale(1.05);
-}
-
 #noBtn {
   background: #444;
   color: #ddd;
@@ -69,8 +77,8 @@ button {
 
 .confetti {
   position: fixed;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   animation: fall 2s linear forwards;
 }
 
@@ -82,7 +90,7 @@ button {
 .heart {
   position: absolute;
   animation: floatUp 2s ease-in forwards;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 @keyframes floatUp {
@@ -96,8 +104,11 @@ button {
 <div class="card" id="card">
   <h1 id="typing"></h1>
   <p>Are you happy that we met?</p>
-  <button id="yesBtn">Yes 💖</button>
-  <button id="noBtn">No 😏</button>
+
+  <div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😏</button>
+  </div>
 </div>
 
 <script>
@@ -117,14 +128,15 @@ function typingEffect(){
 }
 typingEffect();
 
-// No button playful move (not too far)
-noBtn.addEventListener("mouseover", moveButton);
+// NO button move slightly (mobile friendly)
 noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("click", moveButton);
 
 function moveButton(){
   const cardRect = card.getBoundingClientRect();
-  const x = Math.random() * (cardRect.width - 120);
-  const y = Math.random() * (cardRect.height - 60);
+
+  const x = Math.random() * (cardRect.width - 140);
+  const y = Math.random() * (cardRect.height - 120);
 
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
@@ -137,15 +149,16 @@ yesBtn.addEventListener("click", () => {
     <p>
       Meeting you was a beautiful coincidence ✨<br><br>
       It makes me smile knowing that somehow our paths crossed.<br>
-      I hope this is just the beginning of something sweet and meaningful 🌙
+      I hope this is the beginning of something sweet and meaningful 🌙
     </p>
   `;
+
   startConfetti();
   heartAnimation();
 });
 
 function startConfetti(){
-  for(let i=0;i<30;i++){
+  for(let i=0;i<25;i++){
     const confetti = document.createElement("div");
     confetti.className = "confetti";
     confetti.style.left = Math.random()*100 + "vw";
@@ -156,7 +169,7 @@ function startConfetti(){
 }
 
 function heartAnimation(){
-  for(let i=0;i<15;i++){
+  for(let i=0;i<12;i++){
     const heart = document.createElement("div");
     heart.className = "heart";
     heart.innerHTML = "💖";
