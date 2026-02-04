@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>For Kameron 💖</title>
-
 <style>
 body {
   margin: 0;
@@ -25,19 +24,10 @@ body {
   text-align: center;
   box-shadow: 0 0 40px rgba(255,105,180,0.2);
   animation: fadeIn 2s ease;
+  max-width: 90%;
 }
 
-h1 {
-  color: #ff6fae;
-}
-
-h2 {
-  margin-top: 10px;
-}
-
-p {
-  font-size: 18px;
-}
+h1 { color: #ff6fae; }
 
 button {
   padding: 12px 30px;
@@ -53,32 +43,45 @@ button {
   background: linear-gradient(45deg, #ff6fae, #ff9ad5);
   color: white;
 }
-
-#yesBtn:hover {
-  transform: scale(1.1);
-}
+#yesBtn:hover { transform: scale(1.1); }
 
 #noBtn {
   background: #555;
   color: white;
 }
 
-/* Confetti */
-.confetti {
+textarea {
+  width: 90%;
+  height: 120px;
+  border-radius: 15px;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.confetti, .heart {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  animation: fall 4s linear forwards;
+  animation: fall 3s linear forwards;
+}
+
+.heart {
+  font-size: 24px;
 }
 
 @keyframes fall {
-  0% { transform: translateY(0) rotate(0deg); opacity:1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+  0% {transform: translateY(0) rotate(0deg); opacity:1;}
+  100% {transform: translateY(100vh) rotate(360deg); opacity:0;}
 }
 
 @keyframes fadeIn {
   from {opacity:0;}
   to {opacity:1;}
+}
+
+.typing {
+  border-right: 2px solid #ff6fae;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>
 </head>
@@ -92,7 +95,7 @@ button {
 <div class="card" id="card">
   <h1>Hey Kameron 💖</h1>
   <p>I made this just for you…</p>
-  <p>Because there’s something I really want to ask you 😌</p>
+  <p>So tell me honestly 😌</p>
 
   <h2>Are you happy that we met?</h2>
 
@@ -108,43 +111,111 @@ const music = document.getElementById("music");
 
 document.body.addEventListener("click", () => {
   music.play();
-}, { once: true });
+},{once:true});
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+function moveButton() {
+  const cardRect = card.getBoundingClientRect();
+  const x = cardRect.left + Math.random() * (cardRect.width - 120);
+  const y = cardRect.top + Math.random() * (cardRect.height - 60);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
 
 yesBtn.addEventListener("click", () => {
   card.innerHTML = `
     <h1>That makes me smile, Kameron 💖</h1>
-    <p>Meeting you was a beautiful coincidence ✨</p>
-    <p>And honestly… I hope we make more memories together 😌</p>
-    <p>You’re kind of special to me 🌙</p>
+    <p class="typing" id="typingText"></p>
+    <button id="reasonBtn">Tell me why you feel that way 💌</button>
   `;
+  typeText("Meeting you was a beautiful coincidence ✨", "typingText");
   startConfetti();
+
+  document.getElementById("reasonBtn").addEventListener("click", showReasonBox);
 });
 
-noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 100);
-  noBtn.style.position = "absolute";
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-});
+function showReasonBox(){
+  card.innerHTML = `
+    <h2>Your words mean a lot to me 💖</h2>
+    <p>Please write your reason here:</p>
+    <textarea id="reasonInput" placeholder="Type your reason here..."></textarea><br>
+    <button id="sendBtn">Send 💌</button>
+  `;
 
-function startConfetti() {
-  for (let i = 0; i < 180; i++) {
-    createConfetti();
+  document.getElementById("sendBtn").addEventListener("click", sendReason);
+}
+
+function sendReason(){
+  const reason = document.getElementById("reasonInput").value;
+  if(reason.trim() === ""){
+    alert("Please write something first 💕");
+    return;
+  }
+
+  card.innerHTML = `
+    <h2>Sending your words to her… 💖</h2>
+    <p>Please wait a moment ✨</p>
+  `;
+
+  heartAnimation();
+
+  const message = `Kameron said YES 💖\nReason: ${reason}`;
+  setTimeout(() => {
+    window.location.href = "https://wa.me/628xxxxxxxxxx?text=" + encodeURIComponent(message);
+  }, 2000);
+
+  setTimeout(showFinalPage, 4000);
+}
+
+function showFinalPage(){
+  card.innerHTML = `
+    <h1>She has received your answer 💖</h1>
+    <p>Now it’s your turn to tell her how you feel after opening this link 😌</p>
+    <button onclick="exitToChat()">Exit & text her 💌</button>
+  `;
+}
+
+function exitToChat(){
+  const msg = "I just opened your link and it made me feel...";
+  window.location.href = "https://wa.me/628xxxxxxxxxx?text=" + encodeURIComponent(msg);
+}
+
+function startConfetti(){
+  for(let i=0;i<120;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*window.innerWidth+"px";
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    c.style.width="10px";
+    c.style.height="10px";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
   }
 }
 
-function createConfetti() {
-  const confetti = document.createElement("div");
-  confetti.className = "confetti";
-  confetti.style.left = Math.random() * window.innerWidth + "px";
-  confetti.style.background = `hsl(${Math.random()*360},100%,70%)`;
-  confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
-  document.body.appendChild(confetti);
+function heartAnimation(){
+  for(let i=0;i<30;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*window.innerWidth+"px";
+    h.style.top="0px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
+  }
+}
 
-  setTimeout(() => {
-    confetti.remove();
-  }, 5000);
+function typeText(text,id){
+  let i=0;
+  const el=document.getElementById(id);
+  const interval=setInterval(()=>{
+    el.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(interval);
+  },80);
 }
 </script>
 
