@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Kameron 💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  overflow: hidden;
+  color: white;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  padding: 40px 50px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255,105,180,0.2);
+  animation: fadeIn 2s ease;
+}
+
+h1 {
+  color: #ff6fae;
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+p {
+  font-size: 18px;
+}
+
+button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 12px;
+  transition: 0.3s;
+}
+
+#yesBtn {
+  background: linear-gradient(45deg, #ff6fae, #ff9ad5);
+  color: white;
+}
+
+#yesBtn:hover {
+  transform: scale(1.1);
+}
+
+#noBtn {
+  background: #555;
+  color: white;
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: fall 4s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+}
+
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="card">
+  <h1>Hey Kameron 💖</h1>
+  <p>I made this just for you…</p>
+  <p>Because there’s something I really want to ask you 😌</p>
+
+  <h2>Are you happy that we met?</h2>
+
+  <button id="yesBtn">Yes 💕</button>
+  <button id="noBtn">Hmm 🤔</button>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const card = document.getElementById("card");
+const music = document.getElementById("music");
+
+document.body.addEventListener("click", () => {
+  music.play();
+}, { once: true });
+
+yesBtn.addEventListener("click", () => {
+  card.innerHTML = `
+    <h1>That makes me smile, Kameron 💖</h1>
+    <p>Meeting you was a beautiful coincidence ✨</p>
+    <p>And honestly… I hope we make more memories together 😌</p>
+    <p>You’re kind of special to me 🌙</p>
+  `;
+  startConfetti();
+});
+
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+
+function startConfetti() {
+  for (let i = 0; i < 180; i++) {
+    createConfetti();
+  }
+}
+
+function createConfetti() {
+  const confetti = document.createElement("div");
+  confetti.className = "confetti";
+  confetti.style.left = Math.random() * window.innerWidth + "px";
+  confetti.style.background = `hsl(${Math.random()*360},100%,70%)`;
+  confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+  document.body.appendChild(confetti);
+
+  setTimeout(() => {
+    confetti.remove();
+  }, 5000);
+}
+</script>
+
+</body>
+</html>
